@@ -16,6 +16,7 @@ An AI-powered platform that uses real-time pose estimation and augmented reality
 | AR Overlay | OpenCV |
 | Database | SQLite |
 | Auth | JWT (via FastAPI) |
+| Containerization | Docker, Docker Compose |
 
 ---
 
@@ -35,16 +36,30 @@ An AI-powered platform that uses real-time pose estimation and augmented reality
 
 ```
 kinetiq-AI/
-├── frontend/          # Next.js app (UI, dashboards, AR view)
+├── frontend/                  # Next.js app (UI, dashboards, AR view)
 │   ├── public/
 │   └── src/
-├── backend/           # FastAPI server (ML, pose analysis, REST API)
-│   ├── app/
-│   ├── models/
-│   └── database/
-├── README.md
-├── package.json
-└── ...config files
+│       ├── app/
+│       │   ├── analysis/
+│       │   ├── dashboard/
+│       │   │   ├── admin/
+│       │   │   ├── ai-insights/
+│       │   │   ├── patient/
+│       │   │   └── therapist/
+│       │   ├── login/
+│       │   ├── register/
+│       │   └── training/
+│       └── context/
+├── backend/                   # FastAPI server (ML, pose analysis, REST API)
+│   └── app/
+│       ├── database/          # SQLite models & DB setup
+│       ├── routes/            # API route handlers
+│       ├── schemas/           # Pydantic schemas
+│       ├── services/          # Pose detection, MediaPipe, exercise logic
+│       └── utils/
+├── docker-compose.yml
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -53,6 +68,7 @@ kinetiq-AI/
 
 ### Frontend
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
@@ -60,8 +76,16 @@ npm run dev
 ### Backend
 ```bash
 cd backend
+python -m venv venv
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+```
+
+### Docker (optional)
+```bash
+docker-compose up --build
 ```
 
 ---
@@ -71,3 +95,4 @@ uvicorn app.main:app --reload
 - Node.js 18+
 - Python 3.11+
 - Webcam (for live pose detection)
+- Docker & Docker Compose (optional)
